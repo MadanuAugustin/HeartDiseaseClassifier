@@ -18,12 +18,3 @@ def errormsg_function(errormsg, system_error:sys):
     errormsg = "Error has been raised in the filename of {} and the linenbr is {} errormsg : {}".format(filename, lineno, str(errormsg))
     logging.info('Exception file has been executed...!')
     return errormsg
-
-
-try:
-    x = 20/0
-    print(x)
-    
-    
-except Exception as error:
-    raise UserException(error, sys)
