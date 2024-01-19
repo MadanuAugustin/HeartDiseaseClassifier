@@ -96,6 +96,14 @@ class DataTransformation:
 
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
+            train_arr_df  = pd.DataFrame(train_arr)
+
+            test_arr_df = pd.DataFrame(test_arr)
+
+            train_arr_df.to_csv('artifacts\\transformed_train_data.csv', header=True, index = False)
+
+            test_arr_df.to_csv('artifacts\\transformed_test_data.csv', header=True, index = False)
+
             logging.info('completed preprocessing on train and testing dataframes...!')
 
             logging.info('saving the preprocessor object as a pickle file...!')
