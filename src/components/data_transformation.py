@@ -25,11 +25,13 @@ class DataTransformation:
 
     def preprocessor_fun(self):
         try:
-            categorical_columns = ['cp', 'restecg', 'thal']
+            categorical_columns = ['sex', 'fbs', 'exang', 'slope', 'ca']
 
-            numerical_columns = ["age","sex","trestbps","chol","fbs","thalach","exang","oldpeak","slope","ca"]
+            numerical_columns = ["age","trestbps","chol","thalach","oldpeak"]
 
-            logging.info('creating numeric and categoric pipelines...!')
+            encoding_features =  ['cp', 'restecg', 'thal']
+
+            logging.info('creating numeric, onehot and categoric pipelines...!')
 
             numeric_pipeline = Pipeline(
                 steps=[
@@ -41,21 +43,32 @@ class DataTransformation:
             categoric_pipeline = Pipeline(
                 steps=[
                     ('imputer', SimpleImputer(strategy='most_frequent')),
-                    ('one_hot_encoder', OneHotEncoder()),
+                    # ('one_hot_encoder', OneHotEncoder(drop='first')),
                     ('robustscaler', RobustScaler(with_centering=False))
                 ]
             )
 
-            logging.info('Finished creating numeric and categoric pipelines...!')
+            onehot_pipeline = Pipeline(
+                steps=[
+                    ('imputer', SimpleImputer(strategy='most_frequent')),
+                    ('one_hot_encoder', OneHotEncoder(drop='first', dtype='int64')),
+                    ('robustscaler', RobustScaler(with_centering=False))
+                ]
+            )
+
+            logging.info('Finished creating numeric, onehot and categoric pipelines...!')
 
             logging.info('creating preprocessor pipelines...!')
 
             preprocessor = ColumnTransformer(
                 [
                     ('num_pipeline', numeric_pipeline, numerical_columns),
-                    ('cat_pipeline', categoric_pipeline, categorical_columns)
+                    ('cat_pipeline', categoric_pipeline, categorical_columns),
+                    ('onehot_pipeline', onehot_pipeline, encoding_features)
                 ]
             )
+
+            logging.info('finished creating preprocessor pipelines...!')
 
             return preprocessor
         

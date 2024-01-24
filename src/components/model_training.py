@@ -37,13 +37,7 @@ class ModelTrainer:
 
 
             models = [
-               {
-                   'classifier' : AdaBoostClassifier(),
-                   'params':{
-                        'n_estimators': [100,200,300],
-                        'learning_rate':[0.0001, 0.001, 0.01, 0.1, 1.0]
-                   }
-              },
+               
 
               {
                    'classifier':RandomForestClassifier(),
@@ -53,6 +47,14 @@ class ModelTrainer:
                         'max_depth': [3, 6, 9], 
                         'max_leaf_nodes': [3, 6, 9], 
                    }    
+              },
+
+              {
+                   'classifier' : AdaBoostClassifier(),
+                   'params':{
+                        'n_estimators': [100,200,300],
+                        'learning_rate':[0.0001, 0.001, 0.01, 0.1, 1.0]
+                   }
               },
 
               {
@@ -104,10 +106,10 @@ class ModelTrainer:
 
             save_object(
                 file_path= self.model_trainer_config.trained_model_path,
-                obj = best_model_classifier
+                obj = best_model_classifier[0]
             )
 
-            return best_model_classifier
+            return best_model_classifier[0]
         
         except Exception as error:
             raise UserException(error , sys)
